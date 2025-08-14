@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>💘 1 Ano de Amor — Nossa História</title>
+<meta name="description" content="Landing page romântica para comemorar 1 ano de namoro. Inclui contagem, timeline, galeria com lightbox, música e surpresas." />
+<meta property="og:title" content="1 Ano de Amor" />
+<meta property="og:description" content="Celebre o nosso primeiro ano com esta página especial 💘" />
+<meta name="theme-color" content="#FF6B93" />
+<style>
+  /* ====== RESET E VARIÁVEIS ====== */
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --bg: #fff7f9;
+    --bg-2: #ffe6ee;
+    --text: #3a2a2f;
+    --muted: #6b5a60;
+    --primary: #ff6b93;
+    --primary-2: #ff8fb0;
+    --accent: #ffd7e1;
+    --card: rgba(255,255,255,0.7);
+    --shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+  .dark {
+    --bg: #161218;
+    --bg-2: #1e1820;
+    --text: #f7f1f3;
+    --muted: #cab9bf;
+    --primary: #ff6b93;
+    --primary-2: #ff98b6;
+    --accent: rgba(255,107,147,0.15);
+    --card: rgba(255,255,255,0.06);
+    --shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color: var(--text); background: var(--bg);
+  }
+  a { color: inherit; text-decoration: none; }
+  .container { width: min(1100px, 92vw); margin: 0 auto; }
+
+  /* ====== NAVBAR ====== */
+  .nav {
+    position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px);
+    background: linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .dark .nav { background: linear-gradient(to bottom, rgba(22,18,24,0.7), rgba(22,18,24,0.3)); border-color: rgba(255,255,255,0.08); }
+  .nav .wrap { display:flex; align-items:center; justify-content:space-between; padding: 10px 0; }
+  .brand { font-weight: 700; letter-spacing: 0.5px; }
+  .nav .links { display:flex; gap:18px; align-items:center; }
+  .btn, button.btn {
+    background: var(--primary); color: #fff; border: none; border-radius: 999px; padding: 10px 16px; font-weight: 600; cursor: pointer; box-shadow: var(--shadow); transition: transform .15s ease, filter .15s ease;
+  }
+  .btn.ghost { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+
+  /* ====== HERO PARALLAX ====== */
+  .hero {
+    position: relative; min-height: 92vh; display:grid; place-items:center; text-align: center; overflow:hidden;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, var(--accent), transparent),
+      radial-gradient(900px 400px at 10% 100%, var(--accent), transparent),
+      linear-gradient(180deg, var(--bg), var(--bg-2));
+  }
+  .hero::before {
+    content:""; position:absolute; inset:0; background-image:url('https://images.unsplash.com/photo-1518600506278-4e8ef466b810?q=80&w=2000&auto=format&fit=crop');
+    background-size: cover; background-position: center; opacity: .18; filter: blur(2px); transform: translateZ(0); will-change: transform;
+  }
+  .hero-inner { position: relative; z-index: 1; padding: 80px 0 40px; }
+  .title { font-size: clamp(34px, 5vw, 60px); line-height: 1.08; margin: 0; }
+  .subtitle { font-size: clamp(16px, 2.4vw, 22px); color: var(--muted); margin: 10px 0 22px; }
+  .pill { display:inline-flex; gap:8px; align-items:center; background: var(--card); border: 1px solid rgba(0,0,0,0.05); padding: 8px 14px; border-radius: 999px; box-shadow: var(--shadow); }
+
+  /* ====== CONTADOR ====== */
+  .counter {
+    display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:14px; margin-top: 18px;
+  }
+  .counter .box { background: var(--card); padding: 16px 10px; border-radius: 16px; box-shadow: var(--shadow); }
+  .num { font-size: clamp(24px, 4.5vw, 40px); font-weight: 800; color: var(--primary); }
+  .lbl { font-size: 12px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
+  .date-ctrl { margin-top:16px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  input[type="date"] { padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.12); background: var(--card); color: var(--text); }
+
+  /* ====== WAVE SEPARATOR ====== */
+  .wave { display:block; width:100%; height:auto; margin-top:-2px; }
+
+  /* ====== TIMELINE ====== */
+  .timeline { background: var(--bg-2); padding: 60px 0; }
+  .t-grid { display:grid; grid-template-columns: 1fr; gap: 18px; }
+  .t-item { display:grid; grid-template-columns: 50px 1fr; gap: 14px; align-items: start; background: var(--card); padding: 14px; border-radius: 16px; box-shadow: var(--shadow); }
+  .t-icon { width: 50px; height: 50px; display:grid; place-items:center; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--primary-2)); color:#fff; font-size: 22px; }
+  .t-title { margin: 0 0 6px; font-weight: 700; }
+  .t-desc { margin: 0; color: var(--muted); }
+  @media (min-width: 820px) {
+    .t-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ====== GALERIA ====== */
+  .gallery { padding: 60px 0; }
+  .grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .grid img { width:100%; height: 220px; object-fit: cover; border-radius: 16px; cursor: zoom-in; box-shadow: var(--shadow); }
+  @media (min-width: 800px) {
+    .grid { grid-template-columns: repeat(4, 1fr); }
+    .grid img { height: 220px; }
+  }
+  /* Lightbox */
+  .lightbox { position: fixed; inset:0; background: rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index: 80; }
+  .lightbox.show { display:flex; }
+  .lightbox img { max-width: 90vw; max-height: 80vh; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  .lightbox .close, .lightbox .prev, .lightbox .next {
+    position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.5); color:#fff; padding: 10px 14px; border-radius: 999px; cursor: pointer; user-select:none; backdrop-filter: blur(6px);
+  }
+  .lightbox .close { top: 30px; right: 30px; transform: none; }
+  .lightbox .prev { left: 30px; }
+  .lightbox .next { right: 30px; }
+
+  /* ====== CARTA (flip card) ====== */
+  .letter { background: var(--bg-2); padding: 60px 0; }
+  .flip {
+    perspective: 1000px; width: min(760px, 92vw); margin: 0 auto; height: 360px;
+  }
+  .flip-inner { position: relative; width: 1000px; height:600px; transform-style: preserve-3d; transition: transform .9s cubic-bezier(.2,.8,.2,1); }
+  .flip:hover .flip-inner, .flip.is-open .flip-inner { transform: rotateY(180deg); }
+  .face { position:absolute; inset:0; display:grid; place-items:center; border-radius: 18px; padding: 14px; box-shadow: var(--shadow); background: var(--card); backface-visibility: hidden; }
+  .face.back { transform: rotateY(180deg); }
+  .face p { margin: 0; line-height: 1.5; text-align:left; }
+
+  /* ====== RODAPÉ ====== */
+  footer { text-align:center; color: var(--muted); padding: 180px 0 80px; position: relative; }
+
+  /* ====== CORAÇÕES FLUTUANTES ====== */
+  .heart { position: fixed; bottom: -20px; left: 50%; transform: translateX(-50%); pointer-events:none; font-size: 18px; opacity: .8; animation: floatUp linear forwards; }
+  @keyframes floatUp { to { transform: translate(-50%, -120vh) rotate(360deg); opacity: 0; } }
+
+  /* ====== MÚSICA FLOAT ====== */
+  .player { position: fixed; bottom: 16px; right: 16px; display:flex; gap:8px; align-items:center; padding: 10px 12px; background: var(--card); border:1px solid rgba(0,0,0,0.08); border-radius: 999px; box-shadow: var(--shadow); z-index: 60; }
+  .player button { background: var(--primary); color:#fff; border:none; border-radius:999px; padding: 8px 12px; cursor: pointer; }
+  .toggle-theme { margin-left: 8px; background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+
+  /* ====== LOVE METER ====== */
+  .meter { margin-top: 16px; width: 100%; height: 14px; background: var(--accent); border-radius: 999px; overflow: hidden; }
+  .meter > span { display:block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--primary-2)); border-radius: 999px; transition: width 1.4s ease; }
+
+  /* ====== TOAST ====== */
+  .toast { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid rgba(0,0,0,0.08); padding: 10px 14px; border-radius: 12px; box-shadow: var(--shadow); display:none; z-index: 70; }
+  .toast.show { display:block; }
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container wrap">
+      <div class="brand">💘 1 Ano de Amor</div>
+      <div class="links">
+        <a href="#inicio">Início</a>
+        <a href="#historia">Nossa História</a>
+        <a href="#galeria">Galeria</a>
+        <a href="#carta">Carta</a>
+        <button class="btn ghost" id="themeBtn" aria-label="Alternar tema">Tema</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <header id="inicio" class="hero">
+    <div class="hero-inner container">
+      <span class="pill">❤ Primeiros 365 dias — que venham infinitos!</span>
+      <h1 class="title">Feliz 1º Ano, meu Amor!</h1>
+      <p class="subtitle" id="typer"></p>
+
+      <div class="counter" aria-live="polite">
+        <div class="box"><div class="num" id="cd-days">0</div><div class="lbl">dias</div></div>
+        <div class="box"><div class="num" id="cd-hours">0</div><div class="lbl">horas</div></div>
+        <div class="box"><div class="num" id="cd-min">0</div><div class="lbl">minutos</div></div>
+        <div class="box"><div class="num" id="cd-sec">0</div><div class="lbl">segundos</div></div>
+      </div>
+
+      <div class="date-ctrl">
+        <label for="startDate">Nossa data: </label>
+        <input id="startDate" type="date" />
+        <button class="btn" id="saveDate">Atualizar</button>
+      </div>
+
+      <div class="meter" aria-hidden="true"><span id="meterFill"></span></div>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,64L48,58.7C96,53,192,43,288,48C384,53,480,75,576,90.7C672,107,768,117,864,112C960,107,1056,85,1152,80C1248,75,1344,85,1392,90.7L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z" fill="var(--bg-2)"></path></svg>
+  </header>
+
+  <!-- ===== GALERIA ===== -->
+  <section id="galeria" class="gallery">
+    <div class="container">
+      <h2 style="margin:0 0 16px">Nosso álbum</h2>
+      <p class="subtitle">Clique para ampliar 💞</p>
+      <div class="grid" id="galleryGrid">
+        <!-- Imagens de exemplo (troque as URLs) -->
+        <img src="Foto 1.jpg" alt="Foto 1" />
+        <img src="Foto 2.jpg" alt="Foto 2" />
+        <img src="Foto 3.jpg" alt="Foto 3" />
+        <img src="Foto 4.jpg" alt="Foto 4" />
+        <img src="Foto 5.jpg" alt="Foto 5" />
+        <img src="Foto 6.jpg" alt="Foto 6" />
+        <img src="Foto 7.jpg" alt="Foto 7" />
+        <img src="Foto 8.jpg" alt="Foto 8" />
+      </div>
+    </div>
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+      <button class="close" id="lbClose" aria-label="Fechar">✕</button>
+      <button class="prev" id="lbPrev" aria-label="Anterior">◀</button>
+      <img id="lbImg" alt="Foto ampliada" />
+      <button class="next" id="lbNext" aria-label="Próxima">▶</button>
+    </div>
+  </section>
+
+  <!-- ===== CARTA ===== -->
+  <section id="carta" class="letter">
+    <div class="container">
+      <h2 style="margin:0 0 18px">Uma cartinha para você</h2>
+      <p class="subtitle">Passe o mouse (ou toque) para ler 💗</p>
+      <div class="flip" id="flipCard">
+        <div class="flip-inner">
+          <div class="face front">
+            <h3 style="margin:0">Para: Meu grande amor 💖</h3>
+            <p>O que sinto por você não cabe em mil páginas… vire para ler a primeira.</p>
+            <button class="btn" style="margin-top:14px">Virar</button>
+          </div>
+          <div class="face back">
+            <p>
+              Obrigado por suportar tudo por nós!! Suportar até coisas que não lhes são cabiveis, coisas que ninguém passaria dessa forma se realmente não amasse. Agradeço a Deus sempre por ter você comigo a todo instante, Agradeço a Deus também por ter sido a pessoa que me deu um empurraozinho para me aproximar mais de Deus e sabemos
+                        que Ele tem grandes planos para nós e grandes propósitos e que assim seja feita a vontade dEle!.<br> <br>Só quero te dizer que você é o amor da minha vida, abaixo de Deus. Obrigado por
+                        toda a força que voce tem dado, pelo interesse, pelo esforço, eu jamais iria imaginar que eu iria encontrar alguém que fizesse isso por mim, sentir minhas dores, minhas frustrações <br>
+                        pra si, é muito gostoso sentir que tenho você! É muito reciproco mozi, saber que temos um ao outro, saber que "Ninguém larga a mão de ninguém", ser confidente um do outro, ser um para o
+                        outro a todo instante, ser um só sabe?. <br> <br>Ter alguém para imaginar sonhos onde não cabe um, mas sim os dois, crescer juntos, sonhar juntos e por fim, realizar juntos. Ainda vamos viver isso mozi,
+                        vamos um dia, chegar no nivel que Deus guardou para gente, dentro da Vontade dEle, sempre com a permissão dele, sem isso nem saimos da cama. Te amo meu amor e obrigado por todos os momentos, sejam
+                        eles ruins, bons, tristes, frustrantes...Saber que tenho Deus e você em todos os momentos, é maravilhoso, sentir o conforto de saber que toda essa tormenta um dia vai passar!! <br> <br>
+
+                                             "Ninguem larga a mão de ninguém meu amor!! Te amo."
+            </p>
+            <p style="margin-top:10px">Com todo meu amor, hoje e sempre. 💞</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="final">
+    <div class="container">
+      <p>Feito com ❤ para nós dois. — <button class="btn" id="surprise">Soltar confetes</button></p>
+    </div>
+  </footer>
+
+  <!-- Player flutuante -->
+  <div class="player" role="group" aria-label="Controles de música">
+    <button id="playBtn" aria-label="Tocar/Pausar">▶</button>
+    <small style="opacity:.8">love-song.mp3 (coloque o arquivo na mesma pasta)</small>
+    <button class="toggle-theme" id="themeBtn2">Tema</button>
+  </div>
+  <audio id="audio" preload="none">
+    <!-- Substitua por seu arquivo local: love-song.mp3 -->
+    <source src="love-song.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Data salva! 💌</div>
+
+  <script>
+    // ===== Utilidades =====
+    const $ = (sel, all=false) => all ? document.querySelectorAll(sel) : document.querySelector(sel);
+
+    // ===== Tema =====
+    const applySavedTheme = () => {
+      const t = localStorage.getItem('theme');
+      if (t === 'dark') document.documentElement.classList.add('dark');
+    }
+    applySavedTheme();
+    const toggleTheme = () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    }
+    $('#themeBtn').addEventListener('click', toggleTheme);
+    $('#themeBtn2').addEventListener('click', toggleTheme);
+
+    // ===== Typer =====
+    const typerText = "Um ano ao seu lado, e meu coração só sabe agradecer… que venham muitos mais!";
+    let ti = 0; const typerEl = $('#typer');
+    (function typeLoop(){
+      if (ti <= typerText.length) { typerEl.textContent = typerText.slice(0, ti++); setTimeout(typeLoop, 28); }
+    })();
+
+    // ===== Contador =====
+    const cd = { d: $('#cd-days'), h: $('#cd-hours'), m: $('#cd-min'), s: $('#cd-sec') };
+    const startInput = $('#startDate');
+    const saved = localStorage.getItem('loveStart');
+    const defaultDate = '2024-08-13';
+    startInput.value = saved || defaultDate;
+    let startDate = new Date((saved || defaultDate) + 'T00:00:00');
+
+    function updateCounter(){
+      const now = new Date();
+      const diff = now - startDate;
+      if (diff < 0) return; // evita negativo
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      cd.d.textContent = days;
+      cd.h.textContent = hours;
+      cd.m.textContent = minutes;
+      cd.s.textContent = seconds;
+    }
+    updateCounter(); setInterval(updateCounter, 1000);
+
+    // Love meter animado proporcional ao tempo passado no primeiro ano
+    const meter = $('#meterFill');
+    function updateMeter(){
+      const now = new Date();
+      const totalYear = 365 * 86400000;
+      const elapsed = Math.min(now - startDate, totalYear);
+      const pct = Math.max(8, Math.floor((elapsed / totalYear) * 100));
+      meter.style.width = pct + '%';
+    }
+    updateMeter(); setInterval(updateMeter, 1200);
+
+    // Salvar data
+    $('#saveDate').addEventListener('click', () => {
+      if (!startInput.value) return;
+      localStorage.setItem('loveStart', startInput.value);
+      startDate = new Date(startInput.value + 'T00:00:00');
+      showToast('Data salva! 💌');
+      updateCounter(); updateMeter();
+    });
+
+    function showToast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'), 1600); }
+
+    // ===== Lightbox =====
+    const gridImgs = Array.from($('#galleryGrid', true));
+    const lb = $('#lightbox');
+    const lbImg = $('#lbImg');
+    let idx = 0; let imgs = Array.from($('#galleryGrid').querySelectorAll('img'));
+
+    imgs.forEach((im, i) => im.addEventListener('click', () => openLB(i)));
+    function openLB(i){ idx = i; lb.classList.add('show'); lbImg.src = imgs[idx].src; document.body.style.overflow = 'hidden'; }
+    function closeLB(){ lb.classList.remove('show'); document.body.style.overflow = ''; }
+    function prevLB(){ idx = (idx - 1 + imgs.length) % imgs.length; lbImg.src = imgs[idx].src; }
+    function nextLB(){ idx = (idx + 1) % imgs.length; lbImg.src = imgs[idx].src; }
+    $('#lbClose').addEventListener('click', closeLB);
+    $('#lbPrev').addEventListener('click', prevLB);
+    $('#lbNext').addEventListener('click', nextLB);
+    lb.addEventListener('click', (e)=> { if (e.target === lb) closeLB(); });
+    window.addEventListener('keydown', (e)=>{
+      if (!lb.classList.contains('show')) return;
+      if (e.key === 'Escape') closeLB();
+      if (e.key === 'ArrowLeft') prevLB();
+      if (e.key === 'ArrowRight') nextLB();
+    });
+
+    // ===== Flip Card Carta =====
+    const flip = $('#flipCard');
+    flip.addEventListener('click', () => flip.classList.toggle('is-open'));
+
+    // ===== Confete simples =====
+    function confetti(){
+      const colors = ['#ff6b93','#ffd166','#06d6a0','#118ab2','#ef476f'];
+      for (let i=0;i<120;i++){
+        const p = document.createElement('div');
+        p.style.position='fixed'; p.style.zIndex=90; p.style.top='-10px';
+        p.style.left = (Math.random()*100) + 'vw';
+        p.style.width = p.style.height = (6 + Math.random()*6) + 'px';
+        p.style.background = colors[Math.floor(Math.random()*colors.length)];
+        p.style.opacity = .9;
+        p.style.transform = `translateY(0) rotate(${Math.random()*360}deg)`;
+        p.style.borderRadius = '2px';
+        p.style.transition = 'transform 2.2s ease-in, opacity 2.2s ease-in';
+        document.body.appendChild(p);
+        requestAnimationFrame(()=>{
+          p.style.transform = `translateY(${100 + Math.random()*140}vh) rotate(${360+Math.random()*720}deg)`;
+          p.style.opacity = 0.95;
+        });
+        setTimeout(()=> p.remove(), 2400);
+      }
+    }
+    $('#surprise').addEventListener('click', confetti);
+
+    // ===== Corações flutuantes suaves =====
+    function spawnHeart(){
+      const h = document.createElement('div');
+      h.className = 'heart'; h.textContent = '💖';
+      const size = 14 + Math.random()*22; h.style.fontSize = size + 'px';
+      h.style.left = (10 + Math.random()*80) + 'vw';
+      h.style.animationDuration = (6 + Math.random()*6) + 's';
+      document.body.appendChild(h);
+      setTimeout(()=> h.remove(), 12000);
+    }
+    setInterval(spawnHeart, 500);
+
+    // ===== Player de música =====
+    const audio = $('#audio');
+    const playBtn = $('#playBtn');
+    let isPlaying = false;
+    playBtn.addEventListener('click', async () => {
+      try {
+        if (!isPlaying) { await audio.play(); playBtn.textContent = '⏸'; isPlaying = true; }
+        else { audio.pause(); playBtn.textContent = '▶'; isPlaying = false; }
+      } catch(err) {
+        alert('Não foi possível tocar automaticamente. Verifique se o arquivo love-song.mp3 está na mesma pasta.');
+      }
+    });
+    audio.addEventListener('ended', ()=> { isPlaying = false; playBtn.textContent = '▶'; });
+  </script>
+</body>
+</html>
